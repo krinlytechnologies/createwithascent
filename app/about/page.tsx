@@ -168,7 +168,7 @@ export default function AboutPage() {
             </h2>
           </Reveal>
 
-          <ol className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="mt-16 grid gap-6 sm:grid-cols-2">
             {ABOUT.builtFor.items.map((item, index) => (
               <Reveal key={item.id} as="li" level="component">
                 <InteractiveCard
@@ -179,10 +179,8 @@ export default function AboutPage() {
                       : "h-full p-8"
                   }
                 >
-                  <span className="font-mono text-label tracking-[0.14em] text-action">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="mt-5 text-sub text-ink">{item.name}</h3>
+                  <h3 className="text-sub text-ink">{item.name}</h3>
+                  <p className="mt-4 text-body text-copy">{item.body}</p>
                 </InteractiveCard>
               </Reveal>
             ))}

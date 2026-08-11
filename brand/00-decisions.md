@@ -9,6 +9,57 @@ here.
 
 ---
 
+## Build 15 — About rewritten in a human voice
+
+Brief: the page should read "like a conversation between two founders over
+coffee — honest, confident, and approachable." Story, not frameworks. Apple's
+clarity, Airbnb's storytelling, Linear's simplicity. **Design carries the
+sophistication; the language does not.**
+
+Only `lib/about-content.ts` changed in substance. Two components were updated to
+consume the new shape. No section was added, removed or reordered — the Build 14
+architecture stands.
+
+### ⚠️ This brief overrides a standing non-negotiable
+
+| Rule | Status on About |
+|---|---|
+| "Ascent builds **Personal Brand Operating Systems**" — `CLAUDE.md`, positioning | **The phrase no longer appears on the About page.** The brief named "operating system" as jargon to remove, by name. |
+
+Precedence applies: the client brief wins. The *idea* survives intact — About
+still describes a repeating six-step month that compounds, which is what the
+term meant. What is gone is the term. Home and Services are untouched and still
+carry the positioning language, so the product name is not lost site-wide, but
+this is now an inconsistency between pages and it is deliberate.
+
+Also removed by name at the client's instruction: *convictions*, *distribution
+engine*, *business asset*. Verified absent from the rendered page.
+
+| Decision | Was | Now |
+|---|---|---|
+| D-123 | "Expertise is the asset. Distribution is the problem." | "We help founders become impossible to ignore." The hero states a benefit a founder recognises, not a diagnosis. |
+| D-124 | "We didn't start an agency. We solved a pattern." | "We kept seeing the same thing happen." — followed by three beats that *are* the pattern, ending "So we started Ascent." Show, then name. |
+| D-125 | **Convictions → beliefs** | "A few things we've learned." Each one reads as advice from experience: real experience beats trends · showing up weekly beats going viral once · trust takes time · your story can't be copied. |
+| D-126 | **Operating System → how we work** | Six plain steps — learn · plan · create · share · listen · improve — each written as a sentence ("We learn about your business"). Closes with "Every month builds on the last. That's how great brands grow." |
+| D-127 | The loop diagram keeps its centre label | "Continuous / System" → "Every month / builds on the last". The drawing was never the jargon; the caption was. |
+| D-128 | **Who We Work With, personal not exclusive** | Four kinds of *people*, each with a reason: founders who've done the work · people building for the long term · people who'd rather be honest · anyone tired of posting into silence. No industry list. Grid went 4-up → 2-up to hold the added line. |
+| D-129 | Closing CTA is an invitation | "Let's talk about your story." · "Thirty minutes, and no pitch." · "If we're not the right fit, we'll tell you." |
+
+### What was held to
+
+The banned-word list, no exclamation marks, two CTAs only, ≤70-character
+measure, and every section answering exactly one question. The voice got warmer;
+none of the discipline moved.
+
+### Images
+
+Stock photography was proposed mid-build and **withdrawn** — the client is
+supplying assets. `EditorialImage.tsx` and `public/assets/about/*.jpg` remain in
+the tree but are referenced nowhere. Either delete them or point the component
+at the real assets when they arrive.
+
+---
+
 ## Build 14 — About rebuilt as an immersive narrative
 
 Copy roughly halved; motion carries what the paragraphs used to. Every section

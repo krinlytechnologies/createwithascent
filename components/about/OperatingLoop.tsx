@@ -4,21 +4,22 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 
 /**
- * The operating system as a circle: five stages, with insights returning to
- * strategy.
+ * How we work, drawn as a circle: six steps, the last one feeding the first.
  *
- * The ring is drawn with an SVG dash pattern that rotates slowly, and a marker
- * travels the circumference — enough to read as flow without a particle
- * system. Pure SVG and CSS; the whole thing costs one animated transform.
+ * The ring is drawn with an SVG dash pattern that rotates slowly — enough to
+ * read as flow without a particle system. Pure SVG and CSS; the whole thing
+ * costs one animated transform.
  *
- * Every stage is a real part of the system, so the drawing reads correctly with
- * all motion removed — the rotation adds pace, never meaning.
+ * Every step is a real part of the month, so the drawing reads correctly with
+ * all motion removed — the rotation adds pace, never meaning. The list beside
+ * it carries the same steps as full sentences, so the section works without the
+ * diagram at all.
  */
 
 const RADIUS = 150;
 const CENTRE = 190;
 
-/** Five stages, starting at twelve o'clock and running clockwise. */
+/** Steps run clockwise from twelve o'clock. */
 function positionFor(index: number, total: number, radius = RADIUS) {
   const angle = (index / total) * Math.PI * 2 - Math.PI / 2;
   return {
@@ -55,21 +56,27 @@ export function OperatingLoop() {
               </p>
             </Reveal>
 
-            {/* The stage order, readable without the diagram. */}
+            {/* The steps in plain words, readable without the drawing. */}
             <Reveal level="component" className="mt-10">
-              <ol className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <ol>
                 {stages.map((stage, index) => (
-                  <li key={stage.id} className="flex items-center gap-3">
-                    <span className="font-mono text-label tracking-[0.14em] text-muted uppercase">
-                      {stage.name}
+                  <li
+                    key={stage.id}
+                    className="flex items-baseline gap-4 border-t border-line py-4 first:border-t-0 first:pt-0"
+                  >
+                    <span className="font-mono text-label tracking-[0.14em] text-action">
+                      {String(index + 1).padStart(2, "0")}
                     </span>
-                    <span aria-hidden="true" className="text-action">
-                      {index === stages.length - 1 ? "↺" : "→"}
-                    </span>
+                    <span className="text-body text-copy">{stage.detail}</span>
                   </li>
                 ))}
-                <li className="font-mono text-label tracking-[0.14em] text-action uppercase">
-                  Strategy
+                <li className="flex items-baseline gap-4 border-t border-line py-4">
+                  <span aria-hidden="true" className="text-action">
+                    ↺
+                  </span>
+                  <span className="text-body text-ink">
+                    Then we start again, with everything we learned.
+                  </span>
                 </li>
               </ol>
             </Reveal>
@@ -81,7 +88,7 @@ export function OperatingLoop() {
                 viewBox="0 0 380 380"
                 className="mx-auto w-full max-w-[440px]"
                 role="img"
-                aria-label="A closed loop: strategy, production, distribution, demand and insights, with insights returning to strategy."
+                aria-label="A loop of six steps — learn, plan, create, share, listen, improve — returning to the start."
               >
                 {/* The ring. The dashed overlay rotates; the base does not. */}
                 <circle
@@ -107,7 +114,8 @@ export function OperatingLoop() {
                 {stages.map((stage, index) => {
                   const { x, y } = positionFor(index, total);
                   const label = positionFor(index, total, RADIUS + 34);
-                  const isReturn = stage.id === "insights";
+                  /* The last step is where the loop turns back on itself. */
+                  const isReturn = stage.id === "improve";
 
                   return (
                     <g key={stage.id}>
@@ -150,7 +158,7 @@ export function OperatingLoop() {
                   textAnchor="middle"
                   className="fill-[var(--color-muted)] font-mono text-[10px] tracking-[0.16em] uppercase"
                 >
-                  Continuous
+                  Every month
                 </text>
                 <text
                   x={CENTRE}
@@ -158,7 +166,7 @@ export function OperatingLoop() {
                   textAnchor="middle"
                   className="fill-[var(--color-muted)] font-mono text-[10px] tracking-[0.16em] uppercase"
                 >
-                  System
+                  builds on the last
                 </text>
               </svg>
             </Reveal>
