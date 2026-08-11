@@ -1,0 +1,388 @@
+/* ===========================================================================
+   ASCENT STUDIOS — DESIGN TOKENS
+   Phase 2 — Design System & Visual Language
+
+   Source of truth. Never hardcode a hex, size, radius or duration
+   in a component.
+
+   Values marked [SPEC] are taken verbatim from the Phase 2 brief.
+   Values marked [DERIVED] are computed from spec values.
+   Values marked [A11Y] were added to satisfy the brief's own WCAG AA
+   requirement, which three spec values do not meet. See
+   brand/03-design-system.md § Accessibility corrections.
+   =========================================================================== */
+
+:root {
+  /* =========================================================================
+     COLOR — BRAND BLUE
+     One primary brand colour. Used intentionally, never excessively.
+     ========================================================================= */
+
+  --blue-50:  #F0F9FF;   /* [DERIVED] lightest wash, callout blocks        */
+  --blue-100: #D7EEFE;   /* [DERIVED] hover backgrounds, section transition */
+  --blue-200: #B4DFFD;   /* [DERIVED] illustration accents                  */
+  --blue-300: #7EC7FC;   /* [DERIVED] accent on dark surfaces               */
+  --blue-400: #3FAEFD;   /* [DERIVED] motion layers, decorative             */
+  --blue-500: #0597FF;   /* [SPEC]    THE BRAND BLUE                        */
+  --blue-600: #0685E0;   /* [DERIVED] pressed / active fills                */
+  --blue-700: #0870BA;   /* [A11Y]    text-safe blue — links, filled CTAs   */
+  --blue-800: #095890;   /* [DERIVED] pressed state of blue-700             */
+  --blue-900: #09314E;   /* [DERIVED] deep brand navy                       */
+
+  --color-brand: var(--blue-500);
+  --color-action: var(--blue-700);        /* anything blue that carries text */
+
+  /* =========================================================================
+     COLOR — SURFACE
+     ========================================================================= */
+
+  --color-bg: #FAFAF8;         /* [SPEC] warm off-white. Dominates.         */
+  --color-elevated: #FFFFFF;   /* [SPEC] cards, nav, dialogs — elevation only */
+  --color-surface: #F5F7FA;    /* [SPEC] cool panel surface                 */
+  --color-wash: var(--blue-50);/* [SPEC] occasional sky blue                */
+
+  /* =========================================================================
+     COLOR — TEXT
+     ========================================================================= */
+
+  --color-text: #111111;       /* [SPEC] 18.1:1 on bg — primary             */
+  --color-text-2: #5F6368;     /* [SPEC]  5.8:1 on bg — secondary           */
+  --color-text-3: #6B7075;     /* [A11Y]  4.8:1 on bg — muted, AA at any size */
+  --color-text-muted-lg: #8B8B8B; /* [SPEC] 3.3:1 — LARGE TEXT ONLY (≥24px
+                                     or ≥18.66px bold). Never at caption size. */
+  --color-text-on-brand: #FFFFFF;
+  --color-text-link: var(--blue-700);
+
+  /* =========================================================================
+     COLOR — LINE
+     ========================================================================= */
+
+  --color-border: #E5E7EB;     /* [SPEC] component borders                  */
+  --color-divider: #ECECEC;    /* [SPEC] section dividers                   */
+  --color-border-strong: #D3D7DE; /* [DERIVED] input borders, emphasis      */
+
+  /* =========================================================================
+     COLOR — STATE
+     Never rely on colour alone. Pair with an icon, label or underline.
+     ========================================================================= */
+
+  --color-success: #1E7A4B;
+  --color-warning: #9A6300;
+  --color-error:   #C0392B;
+
+  /* =========================================================================
+     COLOR — BLUEPRINT SURFACE  [D-06 RESOLVED]
+     The deep surface is confirmed, and its treatment is architectural
+     blueprint. See brand/09-blueprint-system.md.
+
+     Applies to: Home §04, Home §11, Services §02 and §06, About §04.
+     Everywhere else runs the same vocabulary on paper — see WHITEPRINT below.
+     ========================================================================= */
+
+  --color-deep: #082236;
+  --color-deep-raised: #0E2E45;
+  --color-deep-text: #FAFAF8;
+  --color-deep-text-2: #A9B6C2;
+  --color-deep-border: #1B3E58;
+  --color-deep-accent: var(--blue-300);
+
+  /* --- Blueprint drawing layer -------------------------------------------
+     Two line weights, and only two: 0.5px measures, 1px structures.
+     The grid must never reduce text contrast — measure, do not eyeball.     */
+  --blueprint-grid: rgb(126 199 252 / 0.07);
+  --blueprint-grid-major: rgb(126 199 252 / 0.14);
+  --blueprint-tick: rgb(126 199 252 / 0.55);
+  --grid-minor: 32px;
+  --grid-major: 160px;
+  --line-measure: 0.5px;
+  --line-structure: 1px;
+
+  /* --- Whiteprint: the same vocabulary, run quieter on paper ------------- */
+  --whiteprint-grid: rgb(17 24 40 / 0.05);
+  --whiteprint-grid-major: rgb(17 24 40 / 0.09);
+  --whiteprint-tick: rgb(8 112 186 / 0.6);
+
+  /* =========================================================================
+     3D — CSS transforms only. No WebGL, no Three.js, no canvas.
+     Long focal length reads as an axonometric drawing; short focal length
+     reads as a game engine.
+     ========================================================================= */
+
+  --perspective: 1600px;
+  --tilt-base: 6deg;      /* static viewing angle           */
+  --tilt-pointer: 3deg;   /* interactive response, damped   */
+  --tilt-scroll: 4deg;    /* total change across a section  */
+  --layer-z: 34px;        /* separation between planes      */
+
+  /* =========================================================================
+     TYPOGRAPHY
+     Helvetica-inspired. Never decorative, futuristic or playful.
+     NOTE: --font-sans mixes Helvetica Neue (macOS) with Inter (self-hosted).
+     They differ in width and x-height. See § Typography in the design system
+     doc for the single-family recommendation.
+     ========================================================================= */
+
+  --font-sans: 'Helvetica Neue', Inter, Geist, -apple-system, 'Segoe UI',
+               Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+
+  /* --- Size. Fluid, clamped to the spec's breakpoint values. ------------- */
+  --text-hero:       clamp(2.625rem, 5.5vw, 6rem);      /* 42 → 96  [SPEC] */
+  --text-section:    clamp(2rem, 3.6vw, 4rem);          /* 32 → 64  [SPEC] */
+  --text-subheading: clamp(1.5rem, 2.2vw, 2.5rem);      /* 24 → 40  [SPEC] */
+  --text-body-lg:    clamp(1.25rem, 1.4vw, 1.5rem);     /* 20 → 24  [SPEC] */
+  --text-body:       1.125rem;                          /* 18       [SPEC] */
+  --text-small:      1rem;                              /* 16       [SPEC] */
+  --text-caption:    0.875rem;                          /* 14       [SPEC] */
+  --text-label:      0.75rem;                           /* 12  eyebrow      */
+
+  /* --- Weight ------------------------------------------------------------ */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;   /* subtitles, buttons */
+  --weight-bold: 700;       /* hero, section titles */
+
+  /* --- Line height ------------------------------------------------------- */
+  --lh-hero: 1.05;
+  --lh-section: 1.1;
+  --lh-subheading: 1.2;
+  --lh-body-lg: 1.5;
+  --lh-body: 1.6;
+  --lh-small: 1.55;
+  --lh-caption: 1.45;
+
+  /* --- Tracking. Negative at display sizes is mandatory for grotesques. --- */
+  --ls-hero: -0.035em;
+  --ls-section: -0.025em;
+  --ls-subheading: -0.015em;
+  --ls-body-lg: -0.005em;
+  --ls-body: 0;
+  --ls-label: 0.1em;
+
+  /* --- Measure ----------------------------------------------------------- */
+  --measure: 70ch;          /* [SPEC] maximum paragraph width */
+  --measure-display: 20ch;
+
+  /* =========================================================================
+     LAYOUT
+     ========================================================================= */
+
+  --width-content: 1280px;   /* [SPEC] */
+  --width-editorial: 960px;  /* [SPEC] */
+  --width-reading: 780px;    /* [SPEC] */
+
+  --pad-container: 24px;     /* [SPEC] mobile  */
+  --gutter: 16px;            /* [SPEC] mobile  */
+  --grid-columns: 4;         /* [SPEC] mobile  */
+
+  /* =========================================================================
+     SPACING
+     ========================================================================= */
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;    /* [SPEC] internal component padding — low  */
+  --space-6: 32px;    /* [SPEC] card padding                      */
+  --space-7: 40px;    /* [SPEC] internal component padding — high */
+  --space-8: 48px;    /* [SPEC] small component rhythm            */
+  --space-9: 64px;
+  --space-10: 96px;
+  --space-11: 160px;  /* [SPEC] standard section rhythm           */
+  --space-12: 220px;  /* [SPEC] large story section rhythm        */
+
+  --section-y: clamp(80px, 11vw, 160px);
+  --section-y-lg: clamp(112px, 15vw, 220px);
+
+  /* =========================================================================
+     SHAPE  [SPEC] — no sharp corners, no excessive rounding
+     ========================================================================= */
+
+  --radius-button: 14px;
+  --radius-input: 14px;
+  --radius-card: 18px;
+  --radius-image: 20px;
+  --radius-floating: 24px;
+  --radius-container: 28px;
+  --radius-full: 999px;   /* avatars and dots only — never buttons */
+
+  /* =========================================================================
+     ELEVATION
+     Subtle, almost invisible. Never dramatic. Depth comes from spacing.
+     Shadows are blue-black, not neutral-black, so they sit with the palette.
+     ========================================================================= */
+
+  --shadow-xs:  0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04),
+                 0 4px 12px rgba(16, 24, 40, 0.05);
+  --shadow-nav:  0 1px 0 rgba(16, 24, 40, 0.05),
+                 0 8px 24px rgba(16, 24, 40, 0.06);
+  --shadow-modal: 0 24px 64px rgba(16, 24, 40, 0.12);
+  --shadow-cta:   0 6px 20px rgba(5, 151, 255, 0.22);  /* hover only */
+
+  --blur-nav: saturate(180%) blur(16px);
+
+  /* =========================================================================
+     MOTION — Phase 3. Never exceed 1000ms.
+     Never bounce. Never elastic. Motion is communication, not decoration.
+     ========================================================================= */
+
+  /* --- Duration, by hierarchy level -------------------------------------- */
+  --dur-hover: 180ms;       /* L1 · 150–200ms range                        */
+  --dur-button: 180ms;      /* L1                                          */
+  --dur-card: 250ms;        /* L1–L2                                       */
+  --dur-component: 350ms;   /* L2 · element entering viewport              */
+  --dur-section: 450ms;     /* L3 · section reveal                         */
+  --dur-page: 500ms;        /* L3 · route transition                       */
+  --dur-fade: 300ms;        /* first-paint content fade — not a transition */
+  --dur-hero: 700ms;        /* L4 · cinematic. The ceiling in practice.    */
+
+  /* --- Easing. Three curves. No others. ---------------------------------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);     /* default — anything entering */
+  --ease-inout: cubic-bezier(0.4, 0, 0.2, 1);     /* state changes               */
+  --spring-stiffness: 380;   /* L1 ONLY. Critically damped —                */
+  --spring-damping: 32;      /* visible overshoot is a bounce, and banned.  */
+
+  /* --- The signature reveal: opacity → translateY → blur-to-sharp --------
+     Never combine more than three transformations. This is already at the
+     cap, so nothing may be layered on top of it.                          */
+  --reveal-y-component: 16px;
+  --reveal-y-section: 24px;
+  --reveal-y-hero: 32px;
+  --reveal-blur-component: 4px;
+  --reveal-blur-section: 6px;
+  --reveal-blur-hero: 8px;    /* ceiling. Beyond this it reads as broken.  */
+  --reveal-threshold: 0.15;   /* fire at 15% in view. Reveal once.         */
+  --stagger: 80ms;            /* cap 6 siblings → 480ms, inside the ceiling */
+  --stagger-max: 6;
+
+  /* --- Interaction distances --------------------------------------------- */
+  --lift-hover: -2px;         /* default lift                               */
+  --lift-hover-max: -4px;     /* Level 4 CTAs only                          */
+  --scale-card: 1.02;         /* maximum                                    */
+  --scale-image: 1.03;        /* maximum                                    */
+
+  /* --- Parallax depth. Absolute travel capped at 120px. ------------------ */
+  --parallax-bg: 0.05;
+  --parallax-mid: 0.15;
+  --parallax-fg: 0.25;
+  --parallax-max-travel: 120px;
+
+  /* =========================================================================
+     Z-INDEX
+     ========================================================================= */
+
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-nav: 100;
+  --z-modal: 200;
+}
+
+/* ===========================================================================
+   RESPONSIVE LAYOUT TOKENS  [SPEC]
+   =========================================================================== */
+
+@media (min-width: 768px) {
+  :root {
+    --grid-columns: 8;
+    --gutter: 24px;
+    --pad-container: 40px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --grid-columns: 12;
+    --gutter: 32px;
+    --pad-container: 64px;
+  }
+}
+
+/* ===========================================================================
+   DEEP SURFACE SCOPE  [PROPOSED]
+   Apply .deep to a full-bleed section and the semantic tokens resolve to
+   their on-navy values, so components need no dark-specific variants.
+   =========================================================================== */
+
+.deep {
+  --color-bg: var(--color-deep);
+  --color-elevated: var(--color-deep-raised);
+  --color-surface: var(--color-deep-raised);
+  --color-text: var(--color-deep-text);
+  --color-text-2: var(--color-deep-text-2);
+  --color-text-3: var(--color-deep-text-2);
+  --color-border: var(--color-deep-border);
+  --color-divider: var(--color-deep-border);
+  --color-action: var(--color-deep-accent);
+  --color-text-link: var(--color-deep-accent);
+
+  background-color: var(--color-deep);
+  color: var(--color-deep-text);
+}
+
+/* ===========================================================================
+   ACCESSIBILITY BASELINE  [SPEC: meet WCAG AA]
+   =========================================================================== */
+
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-action);   /* blue-700 — 4.9:1 on bg.
+                                               blue-500 is 2.9:1 and fails the
+                                               3:1 non-text minimum. */
+  outline-offset: 2px;
+  border-radius: var(--radius-button);
+}
+
+/* Reduced motion.
+   Micro-interactions are RETAINED — a colour or border change is feedback,
+   not motion. Everything spatial is removed. Smooth scrolling is switched off
+   entirely, parallax and pinning are disabled in script, and every piece of
+   content must remain complete and reachable. */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-component: 0.01ms;
+    --dur-section: 0.01ms;
+    --dur-page: 0.01ms;
+    --dur-fade: 0.01ms;
+    --dur-hero: 0.01ms;
+
+    --reveal-y-component: 0px;
+    --reveal-y-section: 0px;
+    --reveal-y-hero: 0px;
+    --reveal-blur-component: 0px;
+    --reveal-blur-section: 0px;
+    --reveal-blur-hero: 0px;
+    --stagger: 0ms;
+
+    --lift-hover: 0px;
+    --lift-hover-max: 0px;
+    --scale-card: 1;
+    --scale-image: 1;
+
+    --parallax-bg: 0;
+    --parallax-mid: 0;
+    --parallax-fg: 0;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Below 768px the signature reveal drops blur and runs opacity + Y only.
+   Blur is the most expensive thing in this system and the reveal reads
+   correctly without it. */
+
+@media (max-width: 767px) {
+  :root {
+    --reveal-blur-component: 0px;
+    --reveal-blur-section: 0px;
+    --reveal-blur-hero: 0px;
+  }
+}

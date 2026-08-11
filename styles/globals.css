@@ -1,0 +1,251 @@
+@import "tailwindcss";
+
+@source "../app";
+@source "../components";
+@source "../lib";
+@source "../hooks";
+
+/* ===========================================================================
+   ASCENT STUDIOS — THEME
+   Mirrors tokens/tokens.css. Values are governed by brand/03-design-system.md
+   and brand/04-motion.md. Never hardcode a hex, radius or duration in a
+   component — extend this theme instead.
+   =========================================================================== */
+
+@theme {
+  /* --- Colour ----------------------------------------------------------
+     `brand` is the brand blue and is used for every NON-TEXT purpose.
+     `action` carries text: buttons, links, focus rings. #0597FF is 3.05:1
+     behind white text and 2.92:1 on the canvas — both below AA, and below
+     the 3:1 floor for focus rings. See brand/00-decisions.md.               */
+  --color-brand: #0597ff;
+  --color-brand-soft: #3faefd;
+  --color-action: #0870ba;
+  --color-action-hover: #095890;
+  --color-wash: #f0f9ff;
+
+  /* Warm paper, not white. Three tones, lightest to deepest:
+     surface #FFFDD0 (L .96) · canvas #F5F5DC (L .91) · sand #F7E6CA (L .81).
+     Elevation still reads correctly because the elevated tone is the lighter
+     one — the usual white-on-off-white relationship, warmed. */
+  --color-canvas: #f5f5dc;
+  --color-surface: #fffdd0;
+  --color-sand: #f7e6ca;
+
+  /* The blueprint ground, from brand/09-blueprint-system.md. Used in the intro
+     for the wordmark: white type on a near-white cloud has almost no contrast,
+     and this ties the scene to the identity system rather than reaching for a
+     plain black. ~15.5:1 against the cloud. */
+  --color-deep: #082236;
+
+  --color-ink: #111111;
+  --color-copy: #2b2b2b;
+  --color-muted: #5f6368;
+
+  --color-line: #e5e7eb;
+  --color-line-strong: #d3d7de;
+
+  /* --- Typography ------------------------------------------------------ */
+  --font-sans:
+    var(--font-geist-sans), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Consolas, monospace;
+
+  --text-hero: clamp(2.625rem, 5.5vw, 6rem);
+  --text-hero--line-height: 1.05;
+  --text-hero--letter-spacing: -0.035em;
+  --text-hero--font-weight: 700;
+
+  --text-section: clamp(2rem, 3.6vw, 4rem);
+  --text-section--line-height: 1.1;
+  --text-section--letter-spacing: -0.025em;
+  --text-section--font-weight: 700;
+
+  --text-sub: clamp(1.5rem, 2.2vw, 2.5rem);
+  --text-sub--line-height: 1.2;
+  --text-sub--letter-spacing: -0.015em;
+  --text-sub--font-weight: 600;
+
+  --text-lead: clamp(1.25rem, 1.4vw, 1.5rem);
+  --text-lead--line-height: 1.5;
+  --text-lead--letter-spacing: -0.005em;
+
+  --text-body: 1.125rem;
+  --text-body--line-height: 1.6;
+
+  --text-small: 1rem;
+  --text-small--line-height: 1.55;
+
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.45;
+
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.2;
+  --text-label--letter-spacing: 0.1em;
+  --text-label--font-weight: 600;
+
+  /* --- Shape. No sharp corners, no excessive rounding. ------------------ */
+  --radius-button: 14px;
+  --radius-card: 18px;
+  --radius-image: 20px;
+  --radius-floating: 24px;
+  --radius-container: 28px;
+
+  /* --- Layout ----------------------------------------------------------- */
+  --container-content: 1280px;
+  --container-editorial: 960px;
+  --container-reading: 780px;
+
+  /* --- Elevation. Subtle, almost invisible. Depth comes from spacing. ---- */
+  --shadow-card:
+    0 1px 2px rgb(16 24 40 / 0.04), 0 4px 12px rgb(16 24 40 / 0.05);
+  --shadow-nav: 0 1px 0 rgb(16 24 40 / 0.05), 0 8px 24px rgb(16 24 40 / 0.06);
+  --shadow-cta: 0 6px 20px rgb(5 151 255 / 0.22);
+
+  /* --- Motion. Never bounce. Never elastic. ----------------------------- */
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-state: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===========================================================================
+   BASE
+   =========================================================================== */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Lenis drives the scroll position directly, so native smooth-scroll would
+     fight it. When Lenis is inactive — reduced motion, or no JS — the native
+     behaviour is restored by the :not() guard below. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  html:not(.lenis) {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-copy);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Focus rings use `action`, not `brand` — #0597FF misses the 3:1 minimum
+     for non-text contrast against the canvas. */
+  :focus-visible {
+    outline: 2px solid var(--color-action);
+    outline-offset: 2px;
+    border-radius: var(--radius-button);
+  }
+
+  ::selection {
+    background-color: var(--color-wash);
+    color: var(--color-ink);
+  }
+}
+
+/* ===========================================================================
+   UTILITIES
+   =========================================================================== */
+
+@utility section-y {
+  padding-block: clamp(5rem, 11vw, 10rem);
+}
+
+@utility gutter {
+  padding-inline: clamp(1.5rem, 5vw, 4rem);
+}
+
+/* ---------------------------------------------------------------------------
+   LANDING SEQUENCE
+   The cinematic intro. Everything here is driven by scroll except the idle
+   breathe, which is the only motion on the page that runs on its own.
+   --------------------------------------------------------------------------- */
+
+/* Shown until sky.mp4 loads, and if it never does. A calm ground rather than a
+   black rectangle — the composition still reads without the video. */
+@utility sky-fallback {
+  background-image: linear-gradient(
+    to bottom,
+    #cfe4f5 0%,
+    #e4eef7 42%,
+    var(--color-canvas) 100%
+  );
+}
+
+/* Generated grain, not an asset. Kept far below the threshold where it starts
+   costing contrast. */
+@utility noise-field {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+}
+
+/*
+ * Idle breathe.
+ *
+ * Applied to a wrapper *inside* the element GSAP drives, so the two transforms
+ * never contend for the same node. 6px of travel over 7s — the clouds should
+ * feel alive, never seen to float.
+ */
+@keyframes cloud-breathe {
+  from {
+    transform: translate3d(0, -3px, 0);
+  }
+  to {
+    transform: translate3d(0, 3px, 0);
+  }
+}
+
+@utility cloud-breathe {
+  animation: cloud-breathe 7s var(--ease-state) infinite alternate;
+}
+
+/* The two clouds breathe out of phase, so the pair never pulses as one object. */
+@utility cloud-breathe-offset {
+  animation-delay: -3.5s;
+}
+
+/* ===========================================================================
+   REDUCED MOTION
+   Micro-interactions are retained — a colour or border change is feedback,
+   not motion. Everything spatial is removed.
+   =========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
