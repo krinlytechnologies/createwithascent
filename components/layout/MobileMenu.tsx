@@ -127,8 +127,6 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
                       href={link.href}
                       onClick={onClose}
                       aria-current={active ? "page" : undefined}
-                      /* Not built yet — see the note in Navbar. */
-                      prefetch={link.href === "/" ? undefined : false}
                       className={cn(
                         "flex items-baseline gap-3 py-5 text-sub",
                         "transition-colors duration-200",

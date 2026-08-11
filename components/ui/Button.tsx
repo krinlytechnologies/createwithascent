@@ -77,10 +77,7 @@ export function Button({
     }
 
     return (
-      /* Internal CTAs currently fall back to /lets-connect, which is not built
-         yet, so prefetching it only produces 404s. Drop this once that route
-         exists — a CTA destination is exactly what should be prefetched. */
-      <Link href={href} prefetch={false} className={classes} {...rest}>
+      <Link href={href} className={classes} {...rest}>
         {children}
       </Link>
     );

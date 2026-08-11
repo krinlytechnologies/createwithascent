@@ -71,10 +71,6 @@ export function Navbar() {
                     <Link
                       href={link.href}
                       aria-current={active ? "page" : undefined}
-                      /* About, Services and Let's Connect are not built yet, so
-                         prefetching them just fills the console with 404s.
-                         Remove this once those routes exist. */
-                      prefetch={link.href === "/" ? undefined : false}
                       className={cn(
                         "relative inline-block py-1 text-caption font-medium",
                         "transition-colors duration-200",

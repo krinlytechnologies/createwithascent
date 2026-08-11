@@ -24,13 +24,12 @@
   --color-action-hover: #095890;
   --color-wash: #f0f9ff;
 
-  /* Warm paper, not white. Three tones, lightest to deepest:
-     surface #FFFDD0 (L .96) · canvas #F5F5DC (L .91) · sand #F7E6CA (L .81).
-     Elevation still reads correctly because the elevated tone is the lighter
-     one — the usual white-on-off-white relationship, warmed. */
-  --color-canvas: #f5f5dc;
-  --color-surface: #fffdd0;
-  --color-sand: #f7e6ca;
+  /* Warm off-white dominates; pure white signals elevation, not background.
+     `sand` is the third tone — a barely-there neutral for banding sections
+     apart, so the page has rhythm without introducing colour. */
+  --color-canvas: #fafaf8;
+  --color-surface: #ffffff;
+  --color-sand: #f4f4f1;
 
   /* The blueprint ground, from brand/09-blueprint-system.md. Used in the intro
      for the wordmark: white type on a near-white cloud has almost no contrast,
@@ -182,6 +181,120 @@
 
 @utility gutter {
   padding-inline: clamp(1.5rem, 5vw, 4rem);
+}
+
+/* ---------------------------------------------------------------------------
+   AMBIENT LAYER — About
+   Volumetric mist, a drifting blueprint grid and the marquee. All of it is
+   CSS: layered gradients and transforms, no canvas, no WebGL, no library.
+   Everything animates `transform` or `opacity` only, and every ambient
+   animation stops under `prefers-reduced-motion` via the global rule below.
+   --------------------------------------------------------------------------- */
+
+@keyframes mist-drift {
+  0% {
+    transform: translate3d(-4%, -2%, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(4%, 2%, 0) scale(1.15);
+  }
+}
+
+@keyframes mist-drift-alt {
+  0% {
+    transform: translate3d(3%, 2%, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(-3%, -3%, 0) scale(1.02);
+  }
+}
+
+/* Two counter-drifting fields read as depth without either being noticeable. */
+@utility mist {
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      42% 38% at 22% 30%,
+      rgb(5 151 255 / 0.16) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      36% 34% at 78% 24%,
+      rgb(126 199 252 / 0.18) 0%,
+      transparent 72%
+    ),
+    radial-gradient(
+      50% 40% at 60% 78%,
+      rgb(8 112 186 / 0.1) 0%,
+      transparent 74%
+    );
+  filter: blur(28px);
+  animation: mist-drift 34s var(--ease-state) infinite alternate;
+}
+
+@utility mist-far {
+  position: absolute;
+  inset: -25%;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      44% 40% at 70% 60%,
+      rgb(5 151 255 / 0.12) 0%,
+      transparent 72%
+    ),
+    radial-gradient(
+      38% 36% at 18% 72%,
+      rgb(126 199 252 / 0.14) 0%,
+      transparent 70%
+    );
+  filter: blur(40px);
+  animation: mist-drift-alt 46s var(--ease-state) infinite alternate;
+}
+
+@keyframes grid-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-64px, -64px, 0);
+  }
+}
+
+/* The blueprint grid from the identity system, drifting slowly. Doubled in
+   size so the translate loops seamlessly. */
+@utility blueprint-drift {
+  position: absolute;
+  inset: -64px;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      rgb(8 112 186 / 0.06) 0 1px,
+      transparent 1px 64px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgb(8 112 186 / 0.06) 0 1px,
+      transparent 1px 64px
+    );
+  animation: grid-drift 24s linear infinite;
+}
+
+@keyframes marquee-slide {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@utility marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-slide 48s linear infinite;
 }
 
 /* ---------------------------------------------------------------------------

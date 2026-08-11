@@ -26,6 +26,15 @@ const WhatWeDo = dynamic(() =>
 const HowWeWork = dynamic(() =>
   import("@/components/home/HowWeWork").then((m) => m.HowWeWork),
 );
+const WhyAscent = dynamic(() =>
+  import("@/components/home/WhyAscent").then((m) => m.WhyAscent),
+);
+const Credibility = dynamic(() =>
+  import("@/components/home/Credibility").then((m) => m.Credibility),
+);
+const ConnectWithUs = dynamic(() =>
+  import("@/components/shared/ConnectWithUs").then((m) => m.ConnectWithUs),
+);
 
 /**
  * Home.
@@ -54,6 +63,9 @@ export default function HomePage() {
         <OperatingSystem />
         <WhatWeDo />
         <HowWeWork />
+        <WhyAscent />
+        <Credibility />
+        <ConnectWithUs />
       </div>
     </>
   );

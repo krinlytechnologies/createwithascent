@@ -141,6 +141,74 @@ export const WHAT_WE_DO = {
     "Each answers a different question. None of them works alone — which is the whole point.",
 } as const;
 
+/* --- Why Ascent ---------------------------------------------------------- */
+
+export const WHY_ASCENT = {
+  label: "Why Ascent",
+  heading: "We sell the system, not the output.",
+  /* The pull-quote carries the section on its own for anyone reading only the
+     large type. */
+  quote:
+    "Most founders don't have a content problem. They have a system problem.",
+  reasons: [
+    {
+      id: "strategy-first",
+      index: "01",
+      name: "Strategy before a camera is switched on",
+      body: "Positioning, audience and content pillars are settled first. Everything produced afterwards is an expression of a decision already made, which is why it holds together month after month.",
+    },
+    {
+      id: "measured",
+      index: "02",
+      name: "Measured against pipeline, not reach",
+      body: "Leads, conversations, demand. If a month produced attention and no business, we treat that as information and change the strategy — not as a result to present.",
+    },
+    {
+      id: "cadence",
+      index: "03",
+      name: "A cadence, not a campaign",
+      body: "The system runs continuously and compounds. Each month starts from everything the previous months established, rather than from nothing.",
+    },
+    {
+      id: "scoped",
+      index: "04",
+      name: "Scoped to the strategy, not to a package",
+      body: "The mix of work follows where the strategy says attention should go. A fixed package is a deliverable, and a deliverable is exactly what failed before.",
+    },
+  ],
+} as const;
+
+/* --- Credibility --------------------------------------------------------- */
+
+export const CREDIBILITY = {
+  label: "Credibility",
+  heading: "Judge the thinking before the logos.",
+  body: "Ascent is deliberately low-volume. The honest way to assess us is the work product itself — the documents a system actually produces — and the reasoning behind them.",
+  artefacts: [
+    {
+      id: "positioning",
+      name: "The positioning document",
+      body: "A defensible point of view, and an explicit list of what we will not talk about.",
+    },
+    {
+      id: "calendar",
+      name: "The content calendar",
+      body: "A real operating cadence, with the founder's monthly hours stated as a number.",
+    },
+    {
+      id: "dashboard",
+      name: "The demand dashboard",
+      body: "Leads, conversations and demand signals — the numbers that show the system working.",
+    },
+  ],
+  /**
+   * Client logos, once there are notable ones to show. The wall renders only
+   * when this has entries — an empty logo wall is worse than none, and
+   * inventing them would be exactly the fake authority the brand forbids.
+   */
+  logos: [] as ReadonlyArray<{ name: string; src: string }>,
+} as const;
+
 /* --- §06 How We Work ----------------------------------------------------- */
 
 export const HOW_WE_WORK = {

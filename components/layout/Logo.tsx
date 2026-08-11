@@ -24,7 +24,9 @@ export function Logo({ className }: LogoProps) {
       href="/"
       aria-label="Ascent Studios — home"
       className={cn(
-        "group inline-flex items-center gap-2.5 text-ink",
+        /* py-2 lifts the touch target to 44px without changing the visual
+           height — the header and footer both centre it. */
+        "group inline-flex items-center gap-2.5 py-2 text-ink",
         "transition-opacity duration-200 hover:opacity-70",
         className,
       )}

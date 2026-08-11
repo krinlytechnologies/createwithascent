@@ -9,6 +9,79 @@ here.
 
 ---
 
+## Build 13 — The rest of the website
+
+Homepage completed and the three remaining pages built. The intro was not
+touched.
+
+### Shipped
+
+| Area | Detail |
+|---|---|
+| Home §07–§09 | **Why Ascent** (magazine spread — sticky argument, numbered reasons), **Credibility** (staircase of artefacts, not a grid), **Connect With Us** (85vh destination) |
+| Footer | Logo, navigation, email, social slot, copyright. Nothing else. |
+| `/about` | Belief opening · story · alternating beliefs · preference list · **a worked decision** · typographic close · two-sided fit |
+| `/services` | Three pillars, one full section each, alternating side · the loop explained · fit |
+| `/lets-connect` | No form at all. Three channels and an honest account of what happens on the call. |
+
+Each section carries a different rhythm — sticky margin, alternating spread,
+staircase, preference list, worked case, centred close — so no two read the same
+way.
+
+### Three defects the browser audit caught
+
+**D-120 — `tailwind-merge` was silently deleting classes.** Its default
+`font-size` group only knows t-shirt names (`text-sm`, `text-lg`). Ours are
+semantic — `text-body`, `text-small`, `text-label` — so it classified them as
+**colours** and treated `text-white text-small` as two competing colours,
+dropping the first.
+
+Consequences, all live: the **primary button rendered body-grey on action blue
+at 2.72:1**, far under AA; every section label and navigation link lost its font
+size. Fixed by declaring the sizes in `extendTailwindMerge`, which separates the
+groups. One change, whole site.
+
+**D-121 — every masked heading was invisible.** `LineReveal` put `whileInView`
+on the element that starts translated a full height below its own box — entirely
+outside its `overflow-hidden` wrapper. IntersectionObserver accounts for
+clipping by ancestors, so it reported the line as never intersecting and the
+animation never fired. The headings were present, opaque and permanently hidden.
+
+Now observed with `useInView` on the unclipped wrapper. Variant propagation
+through the mask was tried first and did not work; the explicit hook does.
+
+**D-122 — footer tap targets were 18px tall.** WCAG 2.5.8 asks for 24px
+minimum. Links and email now sit in 44px targets.
+
+### Backgrounds
+
+Cream tones (`#F5F5DC` / `#FFFDD0` / `#F7E6CA`) were applied and then reverted
+on request. Back to warm off-white `#FAFAF8` with white elevation, plus
+`--color-sand: #F4F4F1` — a barely-there neutral for banding sections apart
+without introducing colour.
+
+### Verified — four pages, desktop and mobile
+
+| Check | Result |
+|---|---|
+| `<h1>` per page | Exactly 1 |
+| Footer + Connect block | Present on every page (Connect is inlined on Let's Connect, which carries its own close) |
+| Contrast failures | **0** across 107 / 71 / 71 / 35 elements measured |
+| Page errors · console errors · failed requests | **0 / 0 / 0** |
+| Horizontal scroll at 390px | None on any page |
+| Elements wider than viewport | None |
+| Tap targets | 44px |
+
+Prefetch is re-enabled on navigation and CTAs now the routes exist.
+
+### Note on the probes
+
+`reveal.mjs` produced a false negative by not calling `emulateMediaFeatures` —
+headless Chrome defaults to `prefers-reduced-motion: reduce`, which is a
+different code path. Any probe touching motion must emulate a real visitor.
+
+---
+
 ## Build 12 — Artwork corrections
 
 Four faults reported from a screenshot. All fixed and confirmed by screenshot,

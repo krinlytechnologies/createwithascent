@@ -3,6 +3,7 @@ import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
 import { SITE } from "@/lib/site";
+import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { SmoothScrollProvider } from "@/components/layout/SmoothScrollProvider";
 
@@ -72,6 +73,8 @@ export default function RootLayout({
         <main id="main" tabIndex={-1}>
           {children}
         </main>
+
+        <Footer />
       </body>
     </html>
   );
