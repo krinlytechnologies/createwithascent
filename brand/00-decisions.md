@@ -9,6 +9,71 @@ here.
 
 ---
 
+## Build 14 — About rebuilt as an immersive narrative
+
+Copy roughly halved; motion carries what the paragraphs used to. Every section
+holds one idea.
+
+### ⚠️ This brief reverses standing prohibitions
+
+Recorded plainly, because the About page now looks different from every other
+page on the site and someone will eventually ask why.
+
+| Now used on About | Previously banned by |
+|---|---|
+| Glassmorphism | Design system "Never" list · Phase 2 |
+| Glows / accent lighting | "Neon glows", "glowing edges" |
+| Gradient mist fields | "Random blobs or abstract shapes" |
+| Particle → network sequence | "Particle fields" (blueprint system) |
+| Continuous ambient motion | "Nothing that idles on its own" |
+| Circular loop diagram on About | "One circle per page — Home asserts, Services explains, **About concludes typographically**" |
+| Its own closing CTA | "Connect With Us, identical on every page" |
+| Removal of the worked case study | Phase 6 validation: "§06 shows a real decision rather than describing a framework" |
+
+The last two are the ones worth revisiting later. The worked example was the
+page's strongest trust device — declaring a methodology is what every agency
+does; showing one was the differentiator. And the closing block was a signature
+precisely because it did not vary.
+
+### What was held to regardless
+
+| Constraint | Why |
+|---|---|
+| **CSS and SVG only** | No canvas, no WebGL, no new library. Mist is layered gradients, the network and loop are inline SVG, tilt is a transform. This is what keeps the 60fps floor and the Lighthouse target reachable. |
+| **Tilt capped at 3°**, perspective 1600px | The blueprint system's caps. Off on touch, off under reduced motion, `will-change` cleared on leave. |
+| **All ambient motion stops** under reduced motion | Mist, grid, marquee and loop rotation freeze. Every section reads complete without motion. |
+| Marquee pauses on hover, `aria-hidden` | The conditions the motion system attaches to a marquee. |
+| Transition sequence is **scrubbed** | Nothing plays on its own; the visitor drives it. |
+
+### Structure
+
+Hero (oversized, masked reveal) · We Exist · marquee · particle→network→pipeline
+· belief cards · principles comparison · the loop · Built For · closing CTA.
+
+### Verified — four pages, desktop and mobile
+
+| Check | Result |
+|---|---|
+| `<h1>` per page | Exactly 1 |
+| Contrast failures | **0** on all four pages |
+| Glass card contrast, **measured from rendered pixels** | Background `rgb(251,252,252)`, ink at **18.37:1** |
+| Page errors · console errors · failed requests | **0 / 0 / 0** |
+| Horizontal scroll at 390px | None |
+| Oversized elements | Only the ambient layers and marquee track, all inside `overflow: hidden` |
+
+### Probe correction
+
+The audit first reported the glass cards failing at 1.11:1. That was **a bug in
+my probe**, not the page: Tailwind v4 emits `bg-surface/60` as
+`oklab(0.999994 … / 0.6)`, and the naive number regex read `0`, `999994`, `0`
+as an RGB triple. Confirmed by sampling actual rendered pixels, then the probe
+was fixed to ignore backgrounds it cannot parse rather than guess at them.
+
+Worth remembering: a contrast checker that cannot parse modern colour syntax
+fails **silently and in the alarming direction**.
+
+---
+
 ## Build 13 — The rest of the website
 
 Homepage completed and the three remaining pages built. The intro was not
