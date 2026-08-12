@@ -4,16 +4,19 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 
 /**
- * How we work, drawn as a circle: six steps, the last one feeding the first.
+ * How we work, drawn as a circle: five stages, the last one feeding the first.
+ *
+ * Recalibrate is the return beat — it is what makes this a cycle rather than a
+ * checklist, so it is the one node the ring marks in the action colour.
  *
  * The ring is drawn with an SVG dash pattern that rotates slowly — enough to
  * read as flow without a particle system. Pure SVG and CSS; the whole thing
  * costs one animated transform.
  *
- * Every step is a real part of the month, so the drawing reads correctly with
+ * Every stage is a real part of the cycle, so the drawing reads correctly with
  * all motion removed — the rotation adds pace, never meaning. The list beside
- * it carries the same steps as full sentences, so the section works without the
- * diagram at all.
+ * it carries the same stages in full, so the section works without the diagram
+ * at all.
  */
 
 const RADIUS = 150;
@@ -51,31 +54,29 @@ export function OperatingLoop() {
             </Reveal>
 
             <Reveal level="component" className="mt-8">
-              <p className="max-w-[38ch] text-lead text-copy">
-                {ABOUT.loop.caption}
-              </p>
+              <p className="max-w-[42ch] text-lead text-copy">{ABOUT.loop.intro}</p>
             </Reveal>
 
-            {/* The steps in plain words, readable without the drawing. */}
+            {/* The stages in full, readable without the drawing. */}
             <Reveal level="component" className="mt-10">
               <ol>
                 {stages.map((stage, index) => (
-                  <li
-                    key={stage.id}
-                    className="flex items-baseline gap-4 border-t border-line py-4 first:border-t-0 first:pt-0"
-                  >
-                    <span className="font-mono text-label tracking-[0.14em] text-action">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="text-body text-copy">{stage.detail}</span>
+                  <li key={stage.id} className="border-t border-line py-5">
+                    <p className="flex items-baseline gap-4">
+                      <span className="font-mono text-label tracking-[0.14em] text-action">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-sub text-ink">{stage.name}</span>
+                    </p>
+                    <p className="mt-2 pl-10 text-body text-copy">{stage.detail}</p>
                   </li>
                 ))}
-                <li className="flex items-baseline gap-4 border-t border-line py-4">
+                <li className="flex items-baseline gap-4 border-t border-line py-5">
                   <span aria-hidden="true" className="text-action">
                     ↺
                   </span>
                   <span className="text-body text-ink">
-                    Then we start again, with everything we learned.
+                    Then the cycle starts again, sharper than the last.
                   </span>
                 </li>
               </ol>
@@ -88,7 +89,7 @@ export function OperatingLoop() {
                 viewBox="0 0 380 380"
                 className="mx-auto w-full max-w-[440px]"
                 role="img"
-                aria-label="A loop of six steps — learn, plan, create, share, listen, improve — returning to the start."
+                aria-label="A cycle of five stages — strategy, production, editing, metrics, recalibrate — returning to the start."
               >
                 {/* The ring. The dashed overlay rotates; the base does not. */}
                 <circle
@@ -114,8 +115,8 @@ export function OperatingLoop() {
                 {stages.map((stage, index) => {
                   const { x, y } = positionFor(index, total);
                   const label = positionFor(index, total, RADIUS + 34);
-                  /* The last step is where the loop turns back on itself. */
-                  const isReturn = stage.id === "improve";
+                  /* Recalibrate is where the cycle turns back on itself. */
+                  const isReturn = stage.id === "recalibrate";
 
                   return (
                     <g key={stage.id}>
@@ -158,7 +159,7 @@ export function OperatingLoop() {
                   textAnchor="middle"
                   className="fill-[var(--color-muted)] font-mono text-[10px] tracking-[0.16em] uppercase"
                 >
-                  Every month
+                  Repeating
                 </text>
                 <text
                   x={CENTRE}
@@ -166,7 +167,7 @@ export function OperatingLoop() {
                   textAnchor="middle"
                   className="fill-[var(--color-muted)] font-mono text-[10px] tracking-[0.16em] uppercase"
                 >
-                  builds on the last
+                  and sharpening
                 </text>
               </svg>
             </Reveal>

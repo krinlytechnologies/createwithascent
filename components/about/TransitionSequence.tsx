@@ -5,103 +5,87 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
 
 import { ABOUT } from "@/lib/about-content";
-import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
+import { Reveal } from "@/components/ui/Reveal";
+import { SectionLabel } from "@/components/ui/SectionLabel";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
 /**
- * The transformation: scattered points resolve into a network, then into a
- * pipeline, then into growth.
+ * The transformation — one of the four Level 4 moments.
  *
- * Scrubbed by scroll, so nothing plays on its own — the visitor drives it. The
- * drawing is one inline SVG: points fade, links draw via `stroke-dashoffset`,
- * and a pipeline sweeps. No canvas and no particle library, which is what keeps
- * it inside the frame budget.
+ * Two states of the same business, in matched pairs. Row *n* on the left is
+ * answered by row *n* on the right, so the rows are laid out as a grid rather
+ * than two independent lists: the pairing is the argument, and a mismatch in
+ * length would break it silently. The lengths are asserted below.
  *
- * It carries no information the words do not, so losing it to reduced motion
- * costs nothing: there, the finished state is simply shown.
+ * Scrubbed by scroll, so nothing plays on its own — the visitor drives it. As
+ * the section passes, each "before" line recedes and its "after" answer resolves
+ * to full weight, one pair at a time down the column.
+ *
+ * The flat-legibility test: with every transform removed, this is still two
+ * headed lists of four lines each in a table. Motion sets the pace and the
+ * pairing; it carries no information of its own, which is why reduced motion
+ * simply shows the finished state.
  */
 
-/** Scattered origin points, resolving into a left-to-right pipeline. */
-const NODES = [
-  { x: 60, y: 120 },
-  { x: 150, y: 52 },
-  { x: 236, y: 158 },
-  { x: 330, y: 74 },
-  { x: 424, y: 140 },
-  { x: 520, y: 60 },
-  { x: 612, y: 132 },
-  { x: 706, y: 78 },
-  { x: 800, y: 148 },
-  { x: 890, y: 96 },
-] as const;
+const { transformation } = ABOUT;
 
-const LINKS: ReadonlyArray<[number, number]> = [
-  [0, 1], [1, 2], [2, 3], [3, 4], [4, 5],
-  [5, 6], [6, 7], [7, 8], [8, 9],
-  [1, 3], [3, 5], [5, 7], [2, 4], [4, 6],
-];
+if (transformation.before.items.length !== transformation.after.items.length) {
+  throw new Error("Transformation: before and after must be the same length — they are pairs.");
+}
+
+const PAIRS = transformation.before.items.map((before, index) => ({
+  before,
+  after: transformation.after.items[index]!,
+}));
 
 export function TransitionSequence() {
   const sectionRef = useRef<HTMLElement>(null);
-  const pointsRef = useRef<SVGGElement>(null);
-  const linksRef = useRef<SVGGElement>(null);
-  const pipeRef = useRef<SVGPathElement>(null);
-  const stagesRef = useRef<HTMLOListElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     const ctx = gsap.context(() => {
-      const points = gsap.utils.toArray<SVGCircleElement>("circle", pointsRef.current ?? undefined);
-      const links = gsap.utils.toArray<SVGLineElement>("line", linksRef.current ?? undefined);
-      const stages = gsap.utils.toArray<HTMLElement>("li", stagesRef.current ?? undefined);
+      /*
+       * `matchMedia` rather than a manual check: under reduced motion the
+       * timeline is never built, so every element keeps its CSS state — which
+       * is deliberately the *finished* state. Nothing has to be undone, and
+       * nothing can be left half-resolved.
+       */
+      gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
+        const afters = gsap.utils.toArray<HTMLElement>("[data-after]", gridRef.current ?? undefined);
+        const rules = gsap.utils.toArray<HTMLElement>("[data-rule]", gridRef.current ?? undefined);
 
-      const timeline = gsap.timeline({
-        defaults: { ease: "none" },
-        scrollTrigger: {
-          trigger: section,
-          start: "top 80%",
-          end: "bottom 55%",
-          scrub: true,
-        },
-      });
+        const timeline = gsap.timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            /* Completes as the section reaches the middle of the viewport.
+               Ending on `bottom` stretched the scrub so far that the last pair
+               was still unresolved with the section sitting centred — a visitor
+               who stopped scrolling there saw an argument missing its answer. */
+            end: "center 40%",
+            scrub: true,
+          },
+        });
 
-      /* Particles arrive. */
-      timeline.fromTo(
-        points,
-        { opacity: 0, scale: 0.4, transformOrigin: "center" },
-        { opacity: 1, scale: 1, duration: 22, stagger: 0.8 },
-        0,
-      );
+        PAIRS.forEach((_, index) => {
+          const at = index * 20;
 
-      /* Network forms — the links draw themselves. */
-      timeline.fromTo(
-        links,
-        { strokeDashoffset: 220 },
-        { strokeDashoffset: 0, duration: 34, stagger: 0.9 },
-        20,
-      );
-
-      /* Pipeline sweeps through, and growth follows. */
-      timeline.fromTo(
-        pipeRef.current,
-        { strokeDashoffset: 1100, opacity: 0 },
-        { strokeDashoffset: 0, opacity: 1, duration: 34 },
-        52,
-      );
-
-      /* The caption keeps pace with the drawing. */
-      stages.forEach((stage, index) => {
-        timeline.to(
-          stage,
-          { opacity: 1, duration: 6 },
-          index * (86 / stages.length),
-        );
+          timeline.to(rules[index]!, { scaleX: 1, duration: 12 }, at);
+          timeline.fromTo(
+            afters[index]!,
+            { opacity: 0.15, y: 8 },
+            { opacity: 1, y: 0, duration: 14 },
+            at + 2,
+          );
+        });
       });
     }, section);
 
@@ -111,85 +95,62 @@ export function TransitionSequence() {
   return (
     <section
       ref={sectionRef}
-      aria-labelledby="transition-heading"
-      className="relative overflow-hidden border-t border-line py-24 sm:py-32"
+      aria-labelledby="transformation-heading"
+      className="relative overflow-hidden border-t border-line py-28 sm:py-36"
     >
       <Container>
-        <h2 id="transition-heading" className="sr-only">
-          {ABOUT.transition.caption}
-        </h2>
+        <Reveal>
+          <SectionLabel>{transformation.label}</SectionLabel>
+        </Reveal>
 
-        <div className="relative">
-          <svg
-            viewBox="0 0 950 210"
-            aria-hidden="true"
-            className="w-full"
-            role="presentation"
-          >
-            <g ref={linksRef} stroke="var(--color-brand)" strokeWidth="1" opacity="0.45">
-              {LINKS.map(([a, b]) => {
-                const from = NODES[a];
-                const to = NODES[b];
-                if (!from || !to) return null;
-                return (
-                  <line
-                    key={`${a}-${b}`}
-                    x1={from.x}
-                    y1={from.y}
-                    x2={to.x}
-                    y2={to.y}
-                    strokeDasharray="220"
-                    strokeDashoffset="220"
-                  />
-                );
-              })}
-            </g>
+        <Reveal level="section" className="mt-8">
+          <h2 id="transformation-heading" className="max-w-[16ch] text-section text-ink">
+            {transformation.heading}
+          </h2>
+        </Reveal>
 
-            <path
-              ref={pipeRef}
-              d="M60 120 C 220 20, 380 200, 520 100 S 800 40, 890 96"
-              fill="none"
-              stroke="var(--color-action)"
-              strokeWidth="2"
-              strokeDasharray="1100"
-              strokeDashoffset="1100"
-              opacity="0"
-            />
+        <div ref={gridRef} className="mt-16">
+          {/* Column headings, carried by the grid so they sit over their column. */}
+          <div className="grid grid-cols-1 gap-x-10 border-b border-line pb-4 sm:grid-cols-2">
+            <p className="font-mono text-label tracking-[0.14em] text-muted uppercase">
+              {transformation.before.title}
+            </p>
+            <p className="mt-3 font-mono text-label tracking-[0.14em] text-action uppercase sm:mt-0">
+              {transformation.after.title}
+            </p>
+          </div>
 
-            <g ref={pointsRef} fill="var(--color-action)">
-              {NODES.map((node) => (
-                <circle
-                  key={`${node.x}-${node.y}`}
-                  cx={node.x}
-                  cy={node.y}
-                  r="4"
-                  opacity="0"
-                />
-              ))}
-            </g>
-          </svg>
-
-          <ol
-            ref={stagesRef}
-            aria-hidden="true"
-            className="mt-10 flex flex-wrap justify-between gap-x-6 gap-y-3"
-          >
-            {ABOUT.transition.stages.map((stage) => (
+          <ul>
+            {PAIRS.map(({ before, after }) => (
               <li
-                key={stage}
-                className={cn(
-                  "font-mono text-label tracking-[0.14em] text-muted uppercase",
-                  "opacity-25 motion-reduce:opacity-100",
-                )}
+                key={before}
+                className="grid grid-cols-1 gap-x-10 gap-y-3 border-b border-line py-7 sm:grid-cols-2"
               >
-                {stage}
+                {/*
+                  The "before" state is set apart by colour and by its column
+                  heading, never by opacity. An earlier pass faded it to 0.4 as
+                  the pair resolved, which read well and dropped the text under
+                  the 4.5:1 floor — `--color-muted` is contrast-checked at full
+                  opacity, so it carries the same meaning and stays legible.
+                */}
+                <span className="text-body text-muted">{before}</span>
+
+                <span className="relative flex items-start">
+                  {/* The connector: draws from the old state toward the new one
+                      as the pair resolves. Hidden on one column, where there is
+                      no gap to cross. */}
+                  <span
+                    aria-hidden
+                    data-rule
+                    className="absolute top-[0.7em] -left-10 hidden h-px w-8 origin-left bg-action/40 [transform:scaleX(0)] motion-reduce:[transform:scaleX(1)] sm:block"
+                  />
+                  <span data-after className="text-body text-ink motion-reduce:opacity-100">
+                    {after}
+                  </span>
+                </span>
               </li>
             ))}
-          </ol>
-
-          <p className="mt-8 text-center text-sub text-ink">
-            {ABOUT.transition.caption}
-          </p>
+          </ul>
         </div>
       </Container>
     </section>

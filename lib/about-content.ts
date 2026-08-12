@@ -1,97 +1,147 @@
 /**
- * About — written the way a founder would say it out loud.
+ * About — the client's approved page copy, applied verbatim where possible.
  *
- * No frameworks, no consultant vocabulary. Deliberately absent: "operating
- * system", "convictions", "distribution engine", "business asset", "leverage".
- * Every section answers a plain question — who are we, why did we start, what
- * do we believe, how do we work, who do we work with, why trust us — and reads
- * as the next line of the same conversation.
+ * This supersedes the conversational rewrite that preceded it. That pass was
+ * asked to sound like two founders over coffee; this brief pulls the register
+ * back toward strategy — positioning, authority, demand, leverage — while
+ * keeping the sentences short and the claims checkable.
  *
- * Short sentences. Real observations instead of abstractions.
+ * Section order is fixed by the brief: hero · why we started · what we believe ·
+ * the transformation · how we work · who we work with.
  */
 
 export const ABOUT = {
   meta: {
     title: "About",
     description:
-      "We help founders become impossible to ignore. The story behind Ascent, what we believe, and how we work.",
+      "A strategy-first studio for founders, CEOs and high-growth creators. How Ascent turns positioning, content and performance into one system.",
   },
 
   hero: {
     label: "About",
-    lines: ["We help founders", "become impossible to ignore."],
+    lines: ["We help build personal brands", "that are impossible to ignore."],
     support:
-      "Every business has a story worth telling. We make sure the right people hear yours.",
+      "A strategy-first studio for founders, CEOs and high-growth creators who would rather be known for their thinking than their posting schedule.",
   },
 
   exist: {
     label: "Why we started",
-    lines: ["We kept seeing", "the same thing happen."],
+    lines: ["Why we", "started Ascent."],
+    /* Three beats: the problem, the missing work, the answer. */
     beats: [
-      "Brilliant founders. Years of experience, real products, results to show for it.",
-      "Online, almost none of it came across. Posts went out. Nothing built.",
-      "So we started Ascent.",
+      {
+        id: "authority",
+        title: "Content is everywhere, authority is not",
+        body: "Publishing more doesn't automatically make someone more credible. Visibility only matters when it builds recognition and trust.",
+      },
+      {
+        id: "before-record",
+        title: "The real work happens before you even hit record",
+        body: "Clear positioning, a defined point of view and a strong understanding of what someone should be known for, before production starts.",
+      },
+      {
+        id: "the-gap",
+        title: "Ascent closes that gap for you",
+        body: "We combine positioning, content and performance into one system, built to create visibility, demand and measurable business outcomes.",
+      },
     ],
-  },
-
-  /** Words under the drawing as scattered points resolve into something moving. */
-  transition: {
-    stages: ["Experience", "Story", "Audience", "Momentum", "Growth"],
-    caption: "What you already know, turned into something people follow.",
   },
 
   beliefs: {
     label: "What we believe",
-    heading: "A few things we've learned.",
+    heading: "Four things we hold to.",
     items: [
       {
-        id: "experience",
-        name: "Experience",
-        body: "Real experience beats trends. Every single time.",
+        id: "currency",
+        name: "Visibility is a currency in this age",
+        body: "A strong brand stays present across the channels that matter, not only when there is time to post.",
       },
       {
-        id: "consistency",
-        name: "Consistency",
-        body: "Showing up every week matters more than going viral once.",
+        id: "position-first",
+        name: "Position before you produce",
+        body: "Every piece of content should answer a question nobody's asking out loud: why should anyone care what this person has to say?",
       },
       {
-        id: "trust",
-        name: "Trust",
-        body: "People buy from people they trust. That takes time, and there's no shortcut.",
+        id: "leverage",
+        name: "Content is the best leverage for your business",
+        body: "Used strategically, content can build reputation, generate demand and create opportunities at scale.",
       },
       {
-        id: "story",
-        name: "Your story",
-        body: "Your story is the one thing a competitor can't copy.",
+        id: "attention",
+        name: "Attention should lead somewhere",
+        body: "Views are a metric. The real value is what follows — conversations, leads, opportunities and revenue.",
       },
     ],
   },
 
-  principles: {
-    label: "How we think",
-    heading: "What we choose, and what we don't.",
-    items: [
-      { id: "p1", prefer: "Clarity", over: "Cleverness" },
-      { id: "p2", prefer: "Substance", over: "Volume" },
-      { id: "p3", prefer: "Momentum", over: "Moments" },
-      { id: "p4", prefer: "Your voice", over: "Our style" },
-      { id: "p5", prefer: "The long game", over: "The quick win" },
-    ],
+  /**
+   * The transformation.
+   *
+   * Two states of the same business, in matched pairs: each `before` line is
+   * answered by the `after` line at the same index. The pairing is the argument,
+   * so the two columns must stay the same length.
+   */
+  transformation: {
+    label: "The transformation",
+    heading: "What changes.",
+    before: {
+      title: "Before Ascent",
+      items: [
+        "Inconsistent content and visibility",
+        "No clear market positioning or point of view",
+        "Content disconnected from business objectives",
+        "Unclear understanding of what visibility should achieve",
+      ],
+    },
+    after: {
+      title: "After Ascent",
+      items: [
+        "Clear, defensible market positioning",
+        "A consistent content system that runs without your daily involvement",
+        "Stronger recognition and authority within the market",
+        "More inbound conversations, warm introductions and qualified opportunities",
+      ],
+    },
   },
 
   loop: {
     label: "How we work",
-    heading: "Six steps. Then around again, better.",
-    /* `name` labels the drawing; `detail` is the plain-English version. */
+    heading: "Five stages, repeating.",
+    intro:
+      "We don't run this as a one-off project. It's a process — the same five stages, repeating and sharpening with every cycle.",
     stages: [
-      { id: "learn", name: "Learn", detail: "We learn about your business" },
-      { id: "plan", name: "Plan", detail: "We build a plan together" },
-      { id: "create", name: "Create", detail: "We create it with you" },
-      { id: "share", name: "Share", detail: "We share it consistently" },
-      { id: "listen", name: "Listen", detail: "We see what lands" },
-      { id: "improve", name: "Improve", detail: "We make the next month better" },
+      {
+        id: "strategy",
+        name: "Strategy",
+        detail:
+          "Two focused sessions to map positioning, narrative and direction, specific to the business and the market it sits in.",
+      },
+      {
+        id: "production",
+        name: "Production",
+        detail:
+          "Content is planned and created against that strategy, not around whatever trend is loudest that week.",
+      },
+      {
+        id: "editing",
+        name: "Editing",
+        detail:
+          "Every piece is packaged for the platform it's actually built for, not just cut down from one master file.",
+      },
+      {
+        id: "metrics",
+        name: "Metrics",
+        detail:
+          "We track what's working, and more importantly, what it's doing for the business through conversations, leads and opportunities.",
+      },
+      {
+        id: "recalibrate",
+        name: "Recalibrate",
+        detail:
+          "Once a month, we sit down with the numbers and adjust direction. Nothing runs unexamined for more than 30 days.",
+      },
     ],
-    caption: "Every month builds on the last. That's how great brands grow.",
+    caption: "Nothing runs unexamined for more than 30 days.",
   },
 
   builtFor: {
@@ -99,43 +149,43 @@ export const ABOUT = {
     heading: "The people we love working with.",
     items: [
       {
-        id: "done-the-work",
-        name: "Founders who've done the work",
-        body: "You have the experience. You just haven't had the time to talk about it.",
+        id: "experience",
+        name: "Experience worth putting forward",
+        body: "Years of work, real expertise and a perspective worth building a name around.",
       },
       {
-        id: "long-term",
-        name: "People building for the long term",
-        body: "You're not chasing one good month. You want something that keeps compounding.",
+        id: "long-game",
+        name: "Playing the long game",
+        body: "Building a reputation that compounds, rather than chasing short-term attention.",
       },
       {
-        id: "honest",
-        name: "People who'd rather be honest",
-        body: "No hype, no exaggerating. Just what's true, said well.",
+        id: "substance",
+        name: "Substance over spectacle",
+        body: "Clear thinking, strong work and ideas that don't need to be exaggerated to stand out.",
       },
       {
-        id: "tired",
-        name: "Anyone tired of posting into silence",
-        body: "You've tried content before and it went nowhere. We understand why.",
+        id: "purpose",
+        name: "Visibility with a purpose",
+        body: "Turning the work already being done into a presence that creates recognition, opportunity and growth.",
       },
     ],
   },
 
   cta: {
-    heading: "Let's talk about your story.",
-    body: "Thirty minutes, and no pitch. We'll ask about your business, what you've already tried, and what you want to be known for.",
+    heading: "Let's talk about what you should be known for.",
+    body: "Thirty minutes, and no pitch. We'll ask about the business, what you've already tried, and where recognition would actually change the numbers.",
     close: "If we're not the right fit, we'll tell you.",
   },
 
   marquee: [
-    "Story",
-    "Trust",
-    "Consistency",
-    "Craft",
-    "Momentum",
+    "Positioning",
+    "Authority",
+    "Visibility",
+    "Demand",
+    "Recognition",
+    "Leverage",
     "Clarity",
-    "Voice",
-    "Patience",
-    "Growth",
+    "Compounding",
+    "Momentum",
   ],
 } as const;

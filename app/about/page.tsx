@@ -11,7 +11,6 @@ import { Ambient } from "@/components/about/Ambient";
 import { InteractiveCard } from "@/components/about/InteractiveCard";
 import { Marquee } from "@/components/about/Marquee";
 import { OperatingLoop } from "@/components/about/OperatingLoop";
-import { Principles } from "@/components/about/Principles";
 import { TransitionSequence } from "@/components/about/TransitionSequence";
 
 export const metadata: Metadata = {
@@ -87,18 +86,21 @@ export default function AboutPage() {
             ))}
           </h2>
 
-          <ol className="mt-16 max-w-[46ch]">
+          <ol className="mt-16 max-w-[62ch]">
             {ABOUT.exist.beats.map((beat, index) => (
               <Reveal
-                key={beat}
+                key={beat.id}
                 as="li"
                 level="component"
-                className="border-t border-line py-6 text-lead text-copy last:text-ink"
+                className="border-t border-line py-8"
               >
-                <span className="mr-4 font-mono text-label tracking-[0.14em] text-action">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                {beat}
+                <p className="flex items-baseline gap-4">
+                  <span className="font-mono text-label tracking-[0.14em] text-action">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-sub text-ink">{beat.title}</span>
+                </p>
+                <p className="mt-3 pl-10 text-body text-copy">{beat.body}</p>
               </Reveal>
             ))}
           </ol>
@@ -106,8 +108,6 @@ export default function AboutPage() {
       </section>
 
       <Marquee />
-
-      <TransitionSequence />
 
       {/* ── What we believe ──────────────────────────────────────────────── */}
       <section
@@ -130,7 +130,9 @@ export default function AboutPage() {
             </h2>
           </Reveal>
 
-          <ol className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Two-up, not four. The belief names are full sentences now, and a
+              quarter-width column broke every one of them across four lines. */}
+          <ol className="mt-16 grid gap-6 sm:grid-cols-2">
             {ABOUT.beliefs.items.map((belief) => (
               <Reveal key={belief.id} as="li" level="component">
                 <InteractiveCard className="h-full p-8">
@@ -143,7 +145,7 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <Principles />
+      <TransitionSequence />
 
       <OperatingLoop />
 
